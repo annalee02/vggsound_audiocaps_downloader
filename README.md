@@ -1,8 +1,7 @@
-audiosetdl
+Youtube Audio-Video downloader
 ================
-Modules and scripts for downloading Google's
-[AudioSet](https://research.google.com/audioset/) dataset, a dataset of
-~2.1 million annotated segments from YouTube videos.
+Modules and scripts for downloading
+VGGSound and AudioCaps datasets of annotated segments from YouTube videos.
 
 
 
@@ -32,10 +31,10 @@ Modules and scripts for downloading Google's
     * On Ubuntu/Debian, can be installed with `apt-get install sox`
    
 
-## Running
+## Run
 
 ### As a single script
-* Run `python download_audioset.py`
+* Run `python download_vgg.py`
     * If you are using the local standalone `conda` installation, either
       activate the conda virtual environment, or use the python executable found
       in the local conda installation.
@@ -48,26 +47,8 @@ Modules and scripts for downloading Google's
         * Different strategies for obtaining video
         * Number of multiprocessing pool workers used
         * Path to logging
-    * Run `python download_audioset.py -h` for a full list of arguments
+    * Run `python download_vgg.py` for a full list of arguments
 
-### SLURM
-This can be run as a batch of SLURM jobs
-
-* Run `download_subset_files.sh`
-  * Sets up the data directory structure in the given folder (which will be
-    created) and downloads the AudioSet subset files to that directory.
-    If the `--split <N>` option is used, the script splits the files into N
-    parts, which will have a suffix for a job ID, e.g. `eval_segments.csv.01`.
-  * Example: `./download_subset_files.sh --split 10 /home/user/audiosetdl/data`
-
-* Use `sbatch` to run the `audiosetdl-job-array.s` job array script
-  * SLURM job array script that can be run by sbatch. Be sure to edit this to
-    change the
-    location of the repository (`$SRCDIR`) and to set the data directory
-    (`$DATADIR`). Update any other configurations, such as email notifications
-    and memory usage as it fits your use case.
-  * Example: `sbatch --array=1-10 audiosetdl-job-array.s`
-  
   
 ## Examples
 Examples can be found in the `notebooks` directory of this repository.
@@ -92,7 +73,7 @@ Easiest way to do this is install sox via brew.
 ### Install homebrew 
  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-### Install wget and audiosetdl
+### Install wget and required libraries
  brew install wget
 
  ./setup.sh
