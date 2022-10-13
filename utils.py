@@ -89,8 +89,15 @@ def get_media_filename(ytid, ts_start, ts_end):
         media_filename:  Filename (without extension) for segment media file
                          (Type: str)
     """
-    tms_start, tms_end = int(ts_start * 1000), int(ts_end * 1000)
-    return '{}_{}_{}'.format(ytid, tms_start, tms_end)
+    tms_start, tms_end = int(ts_start), int(ts_end * 1000)
+    # return '{}_{}_{}'.format(ytid, tms_start, tms_end)
+    tms_start = str(tms_start)
+    zero_cnt = 6 - len(tms_start)
+    num_zero = ''
+    for i in range(zero_cnt):
+        num_zero += str(0)
+    tms_start = num_zero + tms_start
+    return '{}_{}'.format(ytid, tms_start)
 
 
 def get_subset_name(subset_path):
