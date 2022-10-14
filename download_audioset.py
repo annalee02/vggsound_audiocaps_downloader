@@ -230,6 +230,10 @@ def ffmpeg(ffmpeg_path, input_path, output_path, input_args=None,
                       (Type: int)
     """
 
+    if os.path.exists(output_path):
+        print('ffmpeg output file "{}" already exists.'.format(output_path))
+        return
+
     if type(input_path) == str:
         inputs = ['-i', input_path]
     elif isinstance(input_path, collections.Iterable):

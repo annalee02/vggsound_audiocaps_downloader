@@ -26,7 +26,7 @@ video_codec = 'h264'
 video_container = 'mp4'
 
 # Load the AudioSet training set
-with open('./data/vggsound.csv') as f:
+with open('./data/VGGSound/vggsound.csv') as f:
     lines = f.readlines()
 
 dl_list = [line.strip().split(',')[:3] for line in lines[3:]]
