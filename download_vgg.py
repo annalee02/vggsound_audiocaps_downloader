@@ -29,11 +29,11 @@ video_container = 'mp4'
 with open('./data/VGGSound/vggsound.csv') as f:
     lines = f.readlines()
 
-dl_list = [line.strip().split(',')[:3] for line in lines[3:]]
+dl_list = [line.strip().split(',') for line in lines]
 num_dl_list = len(dl_list)
 
 # Select a YouTube video from the training set
-ytid, ts_start, label = dl_list[0]
+ytid, ts_start, label = dl_list[0][:3]
 
 # Test
 # ytid = 'BzW-Wd4fBQ4'#'---1_cCGK4M'
@@ -273,7 +273,9 @@ def download_yt_video(ytid, ts_start, ts_end, output_dir, ffmpeg_path, ffprobe_p
 for i in range(0, num_dl_list):
     # Select a YouTube video from the training set
     print('{}/{}'.format(i, num_dl_list))
-    ytid, ts_start, label = dl_list[i]
+    ytid, ts_start, label = dl_list[i][:3]
+    # if dl_list[i][-1] == 'test':
+    #     print("*"*10, "test set", "*"*10)
     ts_end = int(ts_start) + 10
     ts_start, ts_end = float(ts_start), float(ts_end)
     try:

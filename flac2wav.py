@@ -10,6 +10,7 @@ def flac2wav(filename, dir_path):
     flac_filename = 'flac/{}'.format(filename)
     flac_full_path = dir_path + flac_filename
     wav_dir_path = dir_path + 'wav'
+    # Extract name without extension
     filename = os.path.splitext(filename)[0]
     wav_filename = '{}.wav'.format(filename)
     # Create wav audio files if it doesn't exist

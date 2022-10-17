@@ -14,6 +14,7 @@ df = pd.DataFrame(columns=['ytid', 'spoken_description'])
 class AUDIOVIDEOPAIRS:
     def __init__(self):
         self.df = df
+        self.cnt = 0
     
     def find_pairs(self, filename, dir_path):
         # Define mp4 audio filename and path
@@ -22,7 +23,7 @@ class AUDIOVIDEOPAIRS:
         wav_dir_path = dir_path + 'wav'
         filename = os.path.splitext(filename)[0]
         wav_filename = '{}.wav'.format(filename)
-        vggsound_meta = pd.read_csv('data/vggsound.csv', header=None)
+        vggsound_meta = pd.read_csv('data/VGGSound/vggsound.csv', header=None)
         # Write in dataframe if a corresponding wav file exists
         if wav_filename in os.listdir(wav_dir_path):
             wav_full_path = wav_dir_path + '/' + wav_filename
@@ -32,6 +33,7 @@ class AUDIOVIDEOPAIRS:
             # Append a row
             filename = filename + '.mp4'
             self.df = self.df.append([{'ytid': filename, 'spoken_description': sound_description}], ignore_index=True)
+            self.cnt += 1
     
     def run(self, dir_path):
         # list to store files
@@ -43,6 +45,8 @@ class AUDIOVIDEOPAIRS:
                 res.append(filename)
                 # Convert mp4 file to wav
                 self.find_pairs(filename, dir_path)
+            if self.cnt % 100 == 0:
+                print(self.cnt)
         return self.df
         
 
@@ -53,3 +57,4 @@ if __name__ == "__main__":
     print(output_df.head())
     # save to csv that will be used for model training
     output_df.to_csv('data/split/sample.csv', index=False, header=False)
+    output_df.to_csv('/data/dlt/clap/raw_data/VGGSound/split/sample.csv', index=False, header=False)
