@@ -22,18 +22,19 @@ def flac2wav(filename, dir_path):
         print(wav_full_path)
 
 if __name__ == "__main__":
-    dir_path = '/data/dlt/clap/raw_data/VGGSound/'
+    dir_path_list = ['/data/dlt/clap/raw_data/AUDIOCAPS/', '/data/dlt/clap/raw_data/VGGSound/']
 
     # list to store files
     res = []
     # Iterate directory
-    flac_dir_path = dir_path + 'flac'
-    for filename in os.listdir(flac_dir_path):
-        if os.path.isfile(os.path.join(flac_dir_path, filename)):
-            res.append(filename)
-            # Convert flac file to wav
-            try:
-                flac2wav(filename, dir_path)
-            except:
-                pass
-    print(res[:10])
+    for dir_path in dir_path_list:
+        flac_dir_path = dir_path + 'flac'
+        for filename in os.listdir(flac_dir_path):
+            if os.path.isfile(os.path.join(flac_dir_path, filename)):
+                res.append(filename)
+                # Convert flac file to wav
+                try:
+                    flac2wav(filename, dir_path)
+                except:
+                    pass
+        print(res[:10])
