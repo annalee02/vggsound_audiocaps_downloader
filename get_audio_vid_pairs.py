@@ -10,8 +10,8 @@ import os
 import pandas as pd
 
 df = pd.DataFrame(columns=['ytid', 'spoken_description'])
-# data_name = 'AUDIOCAPS'
-data_name = 'VGGSound'
+data_name = 'AUDIOCAPS'
+# data_name = 'VGGSound'
 
 class AUDIOVIDEOPAIRS:
     def __init__(self):
@@ -37,7 +37,9 @@ class AUDIOVIDEOPAIRS:
                 sound_description = row_loc[2].values[0]
                 train_test = row_loc[3].values[0]
                 # Append a row
-                self.df = self.df.append([{'ytid': filename, 'spoken_description': sound_description, 'split': train_test}], ignore_index=True)
+                self.df = self.df.append([{'ytid': filename, \
+                                           'spoken_description': sound_description, \
+                                           'split': train_test}], ignore_index=True)
                 self.cnt += 1
             elif data_name == 'AUDIOCAPS':
                 meta_filenames = ['train', 'val', 'test']
@@ -45,10 +47,14 @@ class AUDIOVIDEOPAIRS:
                     meta_path = 'data/{}/{}.csv'.format(data_name, meta_filename)
                     youtube_meta = pd.read_csv(meta_path, usecols=['youtube_id','start_time','caption'])
                     sound_description_df = youtube_meta.loc[youtube_meta['youtube_id'] == wav_filename[:11]]
+                    assert all(ele == sound_description_df['start_time'].tolist()[0] \
+                            for ele in sound_description_df['start_time'].tolist())
                     sound_description = sound_description_df['caption'].tolist()
                     # Append a row
                     if len(sound_description) != 0:
-                        self.df = self.df.append([{'ytid': filename, 'spoken_description': sound_description, 'split': meta_filename}], ignore_index=True)
+                        self.df = self.df.append([{'ytid': filename, \
+                                                   'spoken_description': sound_description, \
+                                                   'split': meta_filename}], ignore_index=True)
                         self.cnt += 1
     
     def run(self, dir_path):
@@ -63,7 +69,6 @@ class AUDIOVIDEOPAIRS:
                 self.find_pairs(filename, dir_path)
             if self.cnt % 100 == 0:
                 print(self.cnt)
-            break
         return self.df
         
 
