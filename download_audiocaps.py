@@ -25,15 +25,16 @@ audio_container = 'flac'
 video_codec = 'h264'
 video_container = 'mp4'
 
-# Load the VGG training and test set
-with open('./data/VGGSound/vggsound.csv') as f:
+# Load the AUDIOCAPS train/val/test set
+dataset_path = './data/AUDIOCAPS/train.csv'
+with open(dataset_path) as f:
     lines = f.readlines()
 
-dl_list = [line.strip().split(',') for line in lines]
+dl_list = [line.strip().split(',') for line in lines][1:]
 num_dl_list = len(dl_list)
 
 # Select a YouTube video from the training set
-ytid, ts_start, label = dl_list[0][:3]
+ytid, ts_start, label = dl_list[0][1:4] # youtube_id, start_time, caption
 
 # Test
 # ytid = 'BzW-Wd4fBQ4'#'---1_cCGK4M'
@@ -71,8 +72,8 @@ print("Audio URL: " + best_audio_url)
 # best_audio.download(filepath='./data')
 
 # Get output video and audio filepaths
-v_basename_fmt = 'data/VGGSound/{}/{}'.format(video_container, ytid)
-a_basename_fmt = 'data/VGGSound/{}/{}'.format(audio_container, ytid)
+v_basename_fmt = 'data/AUDIOCAPS/{}/{}'.format(video_container, ytid)
+a_basename_fmt = 'data/AUDIOCAPS/{}/{}'.format(audio_container, ytid)
 video_filepath = os.path.join('.', v_basename_fmt + '.' + video_container)
 audio_filepath = os.path.join('.', a_basename_fmt + '.' + audio_container)
 print("video_filepath: ", video_filepath)
@@ -117,7 +118,7 @@ def download_without_ffmpeg():
     else:
         print("Downloaded audio to " + audio_filepath)
 
-# for i in range(10):
+# for i in range(2): # num of retries
 #     download_without_ffmpeg()
 
 def download_yt_video(ytid, ts_start, ts_end, output_dir, ffmpeg_path, ffprobe_path,
@@ -268,17 +269,16 @@ def download_yt_video(ytid, ts_start, ts_end, output_dir, ffmpeg_path, ffprobe_p
     return video_filepath, audio_filepath
 
 # Test
-# download_yt_video(ytid, ts_start, ts_end, './data/', ffmpeg_path, ffprobe_path)
+#download_yt_video(ytid, ts_start, ts_end, '/data/dlt/clap/raw_data/AUDIOCAPS/', ffmpeg_path, ffprobe_path)
 
 for i in range(0, num_dl_list):
     # Select a YouTube video from the training set
     print('{}/{}'.format(i, num_dl_list))
-    ytid, ts_start, label = dl_list[i][:3]
-    # if dl_list[i][-1] == 'test':
-    #     print("*"*10, "test set", "*"*10)
+    ytid, ts_start, label = dl_list[i][1:4]
+    print(dataset_path)
     ts_end = int(ts_start) + 10
     ts_start, ts_end = float(ts_start), float(ts_end)
     try:
-        download_yt_video(ytid, ts_start, ts_end, '/data/dlt/clap/raw_data/VGGSound/', ffmpeg_path, ffprobe_path)
+        download_yt_video(ytid, ts_start, ts_end, '/data/dlt/clap/raw_data/AUDIOCAPS/', ffmpeg_path, ffprobe_path)
     except:
         pass
