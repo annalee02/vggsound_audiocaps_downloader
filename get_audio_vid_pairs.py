@@ -8,10 +8,12 @@ import soundfile
 import numpy
 import os
 import pandas as pd
+import warnings
+warnings.filterwarnings('ignore')
 
 df = pd.DataFrame(columns=['ytid', 'spoken_description'])
-data_name = 'AUDIOCAPS'
-# data_name = 'VGGSound'
+# data_name = 'AUDIOCAPS'
+data_name = 'VGGSound'
 
 class AUDIOVIDEOPAIRS:
     def __init__(self):
